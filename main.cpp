@@ -33,7 +33,6 @@ int main(int argc, char *argv[]){
     //}
 
     static position current[v]; // fill current with all vertices (initial solution)
-    //std::memcpy(current, vertices, sizeof(current));
     for (int i = 0; i<gy; i++){     //create initial solution. Just fills in grid in order
         for(int j = 0; j < gx; j++){
             current[i].xPos = i;
@@ -46,18 +45,6 @@ int main(int argc, char *argv[]){
     {
         printf("%d ", current[i]);
     }
-
-    //Loop
-        //TODO:generate new solution
-        //TODO:score new solution
-        //TODO:If new better than old replace old solution with new
-            //TODO:Else
-                //TODO:ompute ΔE (ΔE = |scoreold− scorenew|)
-                //TODO:compute acceptance probability (p = e-ΔE/T)
-                //TODO:generate random probability (r)
-                //TODO:If (r ≤ p)replace old solution with new
-        //TODO: Lower T
-        // TODO:End Loop when T is below threshold
         
     srand(time(NULL));
     anneal(current);
