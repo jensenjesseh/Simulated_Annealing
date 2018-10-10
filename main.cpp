@@ -66,7 +66,6 @@ int main(int argc, char *argv[]){
 		inputfile >> edges[i].end;
 	}
 
-    //TODO: input grid size g, vertices v, and all edges e from file;
     int vertices[v];
 	position current[v];
 
