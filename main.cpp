@@ -6,6 +6,7 @@
 #include <cmath>
 #include <time.h>
 #include <cstring>
+#include <fstream>
 
 #define INITIAL_TEMPERATURE 10000
 #define COOLING_RATE 0.9999
@@ -33,11 +34,42 @@ float adjustTemperature();
 
 int main(int argc, char *argv[]){
 
+	//open files
+	std::ifstream inputfile(argv[1]);
+    std::ofstream outputfile(argv[2]);
+    //file error checking
+    if (!inputfile)
+    {
+        std::cout << "Error opening input file " << argv[1] << "\n";
+    }
+    if (!outputfile)
+    {
+        std::cout << "Error opening output file " << argv[2] << "\n";
+    }
+	
+	//parse input file and store values
+	int gx,gy,v;
+	char c = '0';
+
+	inputfile >> c;
+	inputfile >> gx;
+	inputfile >> gy;
+	inputfile >> c;
+	inputfile >> v;
+
+	edge edges[v-1];
+
+	for (int i = 0; i < v-1; i++)
+	{
+		inputfile >> c;
+		inputfile >> edges[i].start;
+		inputfile >> edges[i].end;
+	}
+
     //TODO: input grid size g, vertices v, and all edges e from file;
     int vertices[v];
 	position current[v];
-	edge edges[v-1];
-    int gx, gy; 
+
 	int xPos, yPos, count;
 	
 	xPos = 0;
