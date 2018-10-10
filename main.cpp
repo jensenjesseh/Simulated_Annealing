@@ -29,8 +29,8 @@ void anneal(position* current, edge* edges, int v);
 void copy(position *current, position *next);
 void alter(position *next, int v);
 int computeScore(position *next, edge* edges, int v);
-void accept(int *currScore, int nextXcore, position *current, position *next, float temperature);
-float adjustTemperature();
+void accept(int *currScore, int nextScore, position *current, position *next, float temperature, int v);
+float adjustTemp();
 
 int main(int argc, char *argv[]){
 
@@ -110,8 +110,8 @@ void anneal(position *current,edge* edges, int numEvents){
         std::memcpy(next, current, sizeof(next));
         alter(next, numEvents);
         nextScore = computeScore(next, edges, numEvents);
-        accept(&currScore, nextScore, current, next, T);
-        T = adjustTemperature();
+        accept(&currScore, nextScore, current, next, T, numEvents);
+        T = adjustTemp();
         i++;
     }
     printf("\nExplored %d solutions\n", i);
