@@ -84,6 +84,15 @@ void anneal(position *current,edge* edges, int numEvents){
         i++;
     }
     printf("\nExplored %d solutions\n", i);
+	
+	for (int i = 0; i < sizeof(current); i++){
+		printf("Node %d placed at (%d, %d)", i, current[i].xPos, current[i].yPos); 
+	}
+	
+	for (int i = 0; i < sizeof(edges); i++){
+		printf("Edge from %d to %d has length %d", edges[i].start, edges[i].end, edges[i].length);
+	}
+	
     printf("Final score: %d\n", currScore);
 }
 
