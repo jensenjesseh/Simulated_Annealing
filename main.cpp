@@ -5,6 +5,7 @@
 #include <math.h>
 #include <cmath>
 #include <time.h>
+#include <cstring>
 
 #define INITIAL_TEMPERATURE 10000
 #define COOLING_RATE 0.9999
@@ -14,19 +15,19 @@ struct position
 {
     int xPos;
     int yPos;
-}
+};
 
 struct edge
 {
 	int start;
 	int end;
 	int length;
-}
+};
 
 void anneal(position *current);
 void copy(position *current, position *next);
 void alter(position *next);
-int computeScore(position *next);
+int computeScore(position *next, edge* edges, int v);
 void accept(int *currScore, int nextXcore, position *current, position *next, float temperature);
 float adjustTemperature();
 
@@ -35,25 +36,24 @@ int main(int argc, char *argv[]){
     //TODO: input grid size g, vertices v, and all edges e from file;
     int vertices[v];
 	position current[v];
-	//edges edges[numEdges];
+	edge edges[v-1];
     int gx, gy; 
 	int xPos, yPos, count;
 	
 	xPos = 0;
 	yPos = 0;
-    //position current[v]; // fill current with all vertices (initial solution)
+    position current[v]; // fill current with all vertices (initial solution)
     //create initial solution. Just fills in grid in order
 	count = 0;
-    while(count < v)
+    while(count < v){
 		if(xPos == gx){
 			xPos = 0;
 			yPos = yPos + 1;
 		}
             current[count].xPos = xPos;
 			current[count].yPos = yPos;
-			xpos++;
+			xPos++;
 			count++;
-        }
     }
     printf("Initial order:\n");
     for (int i=0; i<v; i++)
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
     anneal(current);
 }
 
-void anneal(position *current, int numEvents){
+void anneal(position *current,edge* edges, int numEvents){
     float T;
     int currScore, nextScore;
     position next[numEvents]; //numEvents will be the number of vertices
@@ -73,12 +73,12 @@ void anneal(position *current, int numEvents){
 
     i = 0;
     T = INITIAL_TEMPERATURE;
-    currScore = computeScore(current, v); //Produces score
+    currScore = computeScore(current, edges, v); //Produces score
     printf("\nInitial score: %d\n", currScore);
     while(T > STOP_THRESHOLD){
-        memcpy(next, current, sizeof(next));
+        std::memcpy(next, current, sizeof(next));
         alter(next, v);
-        nextScore = computeScore(next, v);
+        nextScore = computeScore(next, edges, v);
         accept(&currScore, nextScore, current, next, T);
         T = adjustTemperature();
         i++;
@@ -87,7 +87,7 @@ void anneal(position *current, int numEvents){
     printf("Final score: %d\n", currScore);
 }
 
-int computeScore(position *next, int numEvents){
+int computeScore(position *next, edge* edges, int numEvents){
     
     //const int x_pos[numEvents] = {}; //What values do I initialize these to?
     //const int y_pos[numEvents] = {}; 
