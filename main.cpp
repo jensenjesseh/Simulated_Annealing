@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
 		inputfile >> edges[i].end;
 		
 	}
-
+	
 	position current[v];
 
 	int xPos, yPos, count;
