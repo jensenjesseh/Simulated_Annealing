@@ -25,9 +25,9 @@ struct edge
 	int length;
 };
 
-void anneal(position *current);
+void anneal(position* current, edge* edges, int v);
 void copy(position *current, position *next);
-void alter(position *next);
+void alter(position *next, int v);
 int computeScore(position *next, edge* edges, int v);
 void accept(int *currScore, int nextXcore, position *current, position *next, float temperature);
 float adjustTemperature();
@@ -64,17 +64,16 @@ int main(int argc, char *argv[]){
 		inputfile >> c;
 		inputfile >> edges[i].start;
 		inputfile >> edges[i].end;
+		
 	}
 
-    //TODO: input grid size g, vertices v, and all edges e from file;
-    int vertices[v];
 	position current[v];
 
 	int xPos, yPos, count;
 	
 	xPos = 0;
 	yPos = 0;
-    position current[v]; // fill current with all vertices (initial solution)
+    //position current[v]; // fill current with all vertices (initial solution)
     //create initial solution. Just fills in grid in order
 	count = 0;
     while(count < v){
@@ -94,7 +93,7 @@ int main(int argc, char *argv[]){
     }
         
     srand(time(NULL));
-    anneal(current);
+    anneal(current, edges, v);
 }
 
 void anneal(position *current,edge* edges, int numEvents){
@@ -105,12 +104,12 @@ void anneal(position *current,edge* edges, int numEvents){
 
     i = 0;
     T = INITIAL_TEMPERATURE;
-    currScore = computeScore(current, edges, v); //Produces score
+    currScore = computeScore(current, edges, numEvents); //Produces score
     printf("\nInitial score: %d\n", currScore);
     while(T > STOP_THRESHOLD){
         std::memcpy(next, current, sizeof(next));
-        alter(next, v);
-        nextScore = computeScore(next, edges, v);
+        alter(next, numEvents);
+        nextScore = computeScore(next, edges, numEvents);
         accept(&currScore, nextScore, current, next, T);
         T = adjustTemperature();
         i++;
